@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <HomeScreen  />
+    <HomeScreen />
   </div>
 </template>
 
@@ -15,3 +15,8 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.home {
+  background-color: #111;
+}
+</style>
