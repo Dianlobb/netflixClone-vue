@@ -1,7 +1,7 @@
 <template>
   <header
     class="banner"
-    :style="{ 'background-image': 'url(' + image(movie.backdrop_path) + ')' }"
+    :style="{ 'background-image': 'url(' + image(movie?.backdrop_path) + ')' }"
   >
     <div class="banner_contents">
       <h1 class="banner_title">

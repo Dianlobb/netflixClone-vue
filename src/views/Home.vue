@@ -1,55 +1,65 @@
 <template>
   <Nav />
-  <Banner />
+  <Banner v-show="show" />
   <Row
+    v-show="show"
     :title="correctName('fetchNetflixOriginals')"
     :FetchUrl="API_request.fetchNetflixOriginals"
     :isLargeRow="true"
   />
   <Row
+    v-show="show"
     :title="correctName('fetchTrending')"
     :FetchUrl="API_request.fetchTrending"
     :isLargeRow="false"
   />
   <Row
+    v-show="show"
     :title="correctName('fetchTopRated')"
     :FetchUrl="API_request.fetchTopRated"
     :isLargeRow="false"
   />
   <Row
+    v-show="show"
     :title="correctName('fetchActionMovies')"
     :FetchUrl="API_request.fetchActionMovies"
     :isLargeRow="false"
   />
   <Row
+    v-show="show"
     :title="correctName('fetchComedyMovies')"
     :FetchUrl="API_request.fetchComedyMovies"
     :isLargeRow="false"
   />
   <Row
+    v-show="show"
     :title="correctName('fetchHorrorMovies')"
     :FetchUrl="API_request.fetchHorrorMovies"
     :isLargeRow="false"
   />
   <Row
+    v-show="show"
     :title="correctName('fetchRomanceMovies')"
     :FetchUrl="API_request.fetchRomanceMovies"
     :isLargeRow="false"
   />
   <Row
+    v-show="show"
     :title="correctName('fetchDocumentaries')"
     :FetchUrl="API_request.fetchDocumentaries"
     :isLargeRow="false"
   />
+  <netflix-Intro v-if="!show" @video-finish=" show = true"/>
 </template>
 
 <script>
 import Nav from "@/components/Nav";
 // import Banner from "./Banner";
 import { useStore } from "vuex";
-import { defineAsyncComponent, onMounted } from "vue";
+import { defineAsyncComponent, onMounted,ref } from "vue";
 import { API_request } from "@/services/request";
 import { nextTick } from "process";
+import netflixIntro from "@/components/netflixIntro.vue";
 
 export default {
   name: "Homescreen",
@@ -65,6 +75,7 @@ export default {
         /* webpackChunkName: "Row" */ /* webpackPrefetch: true */ "@/components/Row"
       )
     ),
+    netflixIntro,
   },
   props: {
     msg: String,
@@ -75,8 +86,9 @@ export default {
     onMounted(() => {
       nextTick(() => {
         window.setInterval(() => {
-           store.dispatch("fetchData");
+          store.dispatch("fetchData");
         }, 30000);
+  
       });
     });
     const correctName = (key) => {
@@ -85,10 +97,17 @@ export default {
         .split(/(?=[A-Z])/)
         .join(" ");
     };
+     const show = ref(null);
+    // window.onload = function () {
+    //   setTimeout(() => {
+    //     show.value = true;
+    //   }, 6000);
+    // };
 
     return {
       API_request,
       correctName,
+      show,
     };
   },
 };

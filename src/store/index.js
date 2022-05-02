@@ -45,7 +45,7 @@ export default createStore({
   },
   actions: {
     async fetchData(context) {
-      const request = await instance.get(API_request.fetchNetflixOriginals);
+      const request = await instance.get(API_request.fetchtranding);
       const movie =
         request.data.results[
           Math.floor(Math.random() * request.data.results.length - 1)
@@ -61,7 +61,10 @@ export default createStore({
     async getVideo(context, payload) {
       const request = await instance.get(payload);
       return request.data.results.filter(
-        (item) => item.type === "Trailer" && item.official == true
+        (item) =>
+          item.type === "Trailer" &&
+          item.official == true &&
+          item.site === "YouTube"
       );
     },
     async Login(context, paylod) {

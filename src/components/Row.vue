@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row" @mouseleave="IdPlay = null">
     <h2 class="title">{{ title }}</h2>
     <div class="row_posters">
       <div
@@ -8,17 +8,32 @@
         v-for="movie in filterMovies(movies)"
         :key="movie.id"
       >
-        <PosterCard :movie="movie" :isLargeRow="isLargeRow" />
+        <PosterCard
+          :movie="movie"
+          :isLargeRow="isLargeRow"
+          @see-trailer="getVideo"
+        />
       </div>
     </div>
+    <YoutubeVue3
+      class="youtube_iframe"
+      v-if="IdPlay"
+      ref="youtube"
+      :videoid="IdPlay"
+      loop="1"
+      :width="700"
+      :height="420"
+      @ended="onEndedorPause"
+      @paused="onEndedorPause"
+    />
   </div>
-
 </template>
 
 <script>
-import { computed, defineAsyncComponent } from "vue";
+import { computed, defineAsyncComponent, ref, nextTick } from "vue";
 import { useStore } from "vuex";
-
+import { YoutubeVue3 } from "youtube-vue3";
+import { fetchTrailer } from "../services/request";
 
 export default {
   name: "Row",
@@ -28,7 +43,7 @@ export default {
         /* webpackChunkName: "PosterCard" */ /* webpackPrefetch: true */ "./PosterCard"
       )
     ),
-   
+    YoutubeVue3,
   },
   props: {
     title: { type: String, require: true },
@@ -55,12 +70,46 @@ export default {
         return movies;
       }
     };
+    const IdPlay = ref(null);
+    const youtube = ref(null);
+    const playCurrentVideo = () => {
+      youtube.value.player.playVideo();
+    };
 
+    const onEndedorPause = () => {
+      IdPlay.value = null;
+      youtube.value = null;
+    };
+    const getVideo = async (movieID) => {
+      try {
+        await youtube.value.player.stopVideo();
+      } catch (error) {
+        youtube.value = null;
+      }
+
+      nextTick(async () => {
+        let result = await store.dispatch(
+          "getVideo",
+          props.title.includes("Netflix")
+            ? fetchTrailer(movieID, "tv")
+            : fetchTrailer(movieID)
+        );
+        IdPlay.value = null;
+        IdPlay.value = result.length > 0 ? result[0].key : null;
+      });
+
+      console.log(movieID);
+    };
     return {
       movies: computed(
         () => store.getters[`get${props.title.split(" ").join("")}`]
       ),
       filterMovies,
+      youtube,
+      playCurrentVideo,
+      IdPlay,
+      getVideo,
+      onEndedorPause,
     };
   },
 };
@@ -81,7 +130,7 @@ export default {
     overflow-y: hidden;
     overflow-x: scroll;
     padding: 20px;
-  
+
     &::-webkit-scrollbar {
       display: none;
     }
