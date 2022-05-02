@@ -8,7 +8,9 @@
 
 <style lang="scss">
 @import "./assets/styles/normalize.css";
-#app {
+body {
+  background-color: #000;
   height: 100vh;
+  font-family: sans-serif;
 }
 </style>

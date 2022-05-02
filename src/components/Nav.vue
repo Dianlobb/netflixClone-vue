@@ -1,35 +1,60 @@
 <template>
   <nav class="nav" :class="showNavBar ? 'nav__black' : ''">
     <div class="nav__contents">
+      <router-link :to="{ name: 'Home' }">
+        <img
+          src="../assets/img/Netflix-simbolo.png"
+          alt="netflix logo"
+          class="nav__logo"
+        />
+      </router-link>
+
       <img
-        src="../assets/img/Netflix-simbolo.png"
-        alt="netflix logo"
-        class="nav__logo"
+        :src="getImgUrl(profilePath)"
+        alt="avatar"
+        class="nav__avatar"
+        @mouseover="showOptions = true"
       />
-      <img src="../assets/img/avatar.png" alt="avatar" class="nav__avatar" />
+      <ProfileOptions
+        @mouseleave="showOptions = false"
+        v-if="showOptions"
+        @change-profile="profilePath = $event"
+      />
     </div>
   </nav>
 </template>
 
 <script>
+import ProfileOptions from "@/components/ProfileOptions";
 import { ref } from "vue";
 export default {
   name: "Nav",
   props: {
     msg: String,
   },
+  components: {
+    ProfileOptions,
+  },
   setup() {
     const showNavBar = ref(false);
     const transitionNavBar = () => {
-      if (window.scrollY > 100) {
-        showNavBar.value = false;
-      } else {
+      if (window.scrollY > 180) {
         showNavBar.value = true;
+      } else {
+        showNavBar.value = false;
       }
     };
     window.addEventListener("scroll", transitionNavBar);
+    const showOptions = ref(false);
+    const profilePath = ref("avatar.png");
+    const getImgUrl = (pic) => {
+      return require("../assets/img/" + pic);
+    };
     return {
       showNavBar,
+      showOptions,
+      profilePath,
+      getImgUrl,
     };
   },
 };

@@ -12,11 +12,13 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
 import { computed, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
+
 
 export default {
   name: "Row",
@@ -26,6 +28,7 @@ export default {
         /* webpackChunkName: "PosterCard" */ /* webpackPrefetch: true */ "./PosterCard"
       )
     ),
+   
   },
   props: {
     title: { type: String, require: true },
@@ -78,6 +81,7 @@ export default {
     overflow-y: hidden;
     overflow-x: scroll;
     padding: 20px;
+  
     &::-webkit-scrollbar {
       display: none;
     }
@@ -85,7 +89,7 @@ export default {
       max-height: 140px;
       margin-right: 10px;
       min-width: 250px;
-       z-index: 111;
+      position: relative;
     }
     .row_posterLarge {
       max-height: 350px;

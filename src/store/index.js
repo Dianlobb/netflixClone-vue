@@ -13,6 +13,8 @@ export default createStore({
     HorrorMovies: {},
     RomanceMovies: {},
     Documentaries: {},
+    islogin: sessionStorage.getItem("IS_LOGIN") || false,
+    userdata: {},
   },
   getters: {
     getMovie: (state) => state.movie,
@@ -24,6 +26,8 @@ export default createStore({
     getHorrorMovies: (state) => state.HorrorMovies,
     getRomanceMovies: (state) => state.RomanceMovies,
     getDocumentaries: (state) => state.Documentaries,
+    getIslogin: (state) => state.islogin,
+    getUserdata: (state) => state.userdata,
   },
   mutations: {
     SET_MOVIES(state, data) {
@@ -31,6 +35,12 @@ export default createStore({
     },
     SET_ROWS(state, [key, data]) {
       state[key.replace("fetch", "")] = data;
+    },
+    IS_LOGIN(state, data) {
+      state.islogin = data;
+    },
+    SET_DATA_USER(state, data) {
+      state.userdata = data;
     },
   },
   actions: {
@@ -53,6 +63,15 @@ export default createStore({
       return request.data.results.filter(
         (item) => item.type === "Trailer" && item.official == true
       );
+    },
+    async Login(context, paylod) {
+      context.commit("IS_LOGIN", true);
+      sessionStorage.setItem("IS_LOGIN", true);
+      context.commit("SET_DATA_USER", paylod);
+    },
+    async logOut(context) {
+      sessionStorage.setItem("IS_LOGIN", false);
+      context.commit("IS_LOGIN", false);
     },
   },
   modules: {},
