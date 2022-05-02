@@ -3,7 +3,7 @@ node_modules
 /dist
 .env
 /video
-
+firebase.js
 # local env files
 .env.local
 .env.*.local
