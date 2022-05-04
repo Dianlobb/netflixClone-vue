@@ -6,18 +6,15 @@
     class="row_poster"
     :class="isLargeRow ? 'large' : 'normal'"
     :id="movie.id"
-    :src="`https://image.tmdb.org/t/p/original/${
-      isLargeRow ? movie.poster_path : movie.backdrop_path
-    }`"
+    :src="srcImg"
     :alt="movie.name"
-    @click="emit('see-trailer', movie.id)"
+    @click="emit('see-trailer', [movie.id, movie?.media_type])"
+    loading="lazy"
   />
 </template>
 
 <script>
-// import { useStore } from "vuex";
-// import { reactive, ref } from "vue";
-// import { fetchTrailer } from "../services/request";
+import { computed } from "@vue/runtime-core";
 export default {
   name: "PosterCard",
   emits: ["see-trailer"],
@@ -25,25 +22,32 @@ export default {
     movie: { type: Object, require: true },
     isLargeRow: { type: Boolean, require: true },
   },
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     return {
       emit,
+      srcImg: computed(
+        () =>
+          `https://image.tmdb.org/t/p/${props.isLargeRow ? "w500" : "w300"}/${
+            props.isLargeRow
+              ? props.movie.poster_path
+              : props.movie.backdrop_path
+          }`
+      ),
     };
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .row_poster {
   width: 100%;
   object-fit: contain;
   transition: transform 450ms;
   z-index: -1;
-  .normal{
+  .normal {
     aspect-ratio: 16/9;
   }
-  .large{
+  .large {
     aspect-ratio: 1;
   }
   &:hover {

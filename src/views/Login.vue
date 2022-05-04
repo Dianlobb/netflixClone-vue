@@ -10,29 +10,28 @@
       <div class="loginScreen_gradient"></div>
     </div>
     <transition name="scale" mode="out-in">
-    <singin-Screen class="loginScrenn_body" v-if="singIn"></singin-Screen>
-    
-    <div class="loginScrenn_body" v-else>
-      <h1>Unlimited movies, TV shows, and more.</h1>
-      <h2>Watch anywhere. Cancel anytime.</h2>
-      <h3>
-        Ready to watch? Enter your email to create or restart your membership.
-      </h3>
-      <div class="loginScren_input">
-        <form>
-          <input type="email" placeholder="Eail Address" />
-          <button class="loginScreen_getStarted" @click="singIn = true">
-            GET STARTED
-          </button>
-        </form>
+      <singin-Screen class="loginScrenn_body" v-if="singIn"></singin-Screen>
+
+      <div class="loginScrenn_body" v-else>
+        <h1>Unlimited movies, TV shows, and more.</h1>
+        <h2>Watch anywhere. Cancel anytime.</h2>
+        <h3>
+          Ready to watch? Enter your email to create or restart your membership.
+        </h3>
+        <div class="loginScren_input">
+          <form>
+            <input type="email" placeholder="Eail Address" />
+            <button class="loginScreen_getStarted" @click="singIn = true">
+              GET STARTED
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
     </transition>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import singinScreen from "@/components/singinScreen.vue";
 import { ref } from "@vue/reactivity";
 
@@ -138,7 +137,6 @@ export default {
 .scale-leave-active {
   transition: all 0.5s ease;
 }
-
 
 .scale-enter-from,
 .scale-leave-to {

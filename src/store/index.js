@@ -60,12 +60,14 @@ export default createStore({
     },
     async getVideo(context, payload) {
       const request = await instance.get(payload);
-      return request.data.results.filter(
+      let filterResult = request.data.results.filter(
         (item) =>
           item.type === "Trailer" &&
           item.official == true &&
           item.site === "YouTube"
       );
+
+      return filterResult.length ? filterResult : request.data.results;
     },
     async Login(context, paylod) {
       context.commit("IS_LOGIN", true);

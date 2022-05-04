@@ -37,24 +37,19 @@ export default {
   },
   setup() {
     const showNavBar = ref(false);
-    const transitionNavBar = () => {
-      if (window.scrollY > 180) {
-        showNavBar.value = true;
-      } else {
-        showNavBar.value = false;
-      }
-    };
-    window.addEventListener("scroll", transitionNavBar);
     const showOptions = ref(false);
     const profilePath = ref("avatar.png");
-    const getImgUrl = (pic) => {
-      return require("../assets/img/" + pic);
+
+    const transitionNavBar = () => {
+      showNavBar.value = window.scrollY > 180 ? true : false;
     };
+    window.addEventListener("scroll", transitionNavBar);
+
     return {
       showNavBar,
       showOptions,
       profilePath,
-      getImgUrl,
+      getImgUrl:(pic) => require("../assets/img/" + pic),
     };
   },
 };

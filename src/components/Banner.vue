@@ -33,15 +33,10 @@ export default {
         ? string.substr(0, character - 1) + "..."
         : string;
     };
-
-    const image = (img) => {
-      return `https://image.tmdb.org/t/p/original/${img}`;
-    };
-
     return {
       truncate,
       movie: computed(() => store.getters.getMovie),
-      image,
+      image: (img) => `https://image.tmdb.org/t/p/original/${img}`,
     };
   },
 };
@@ -51,7 +46,7 @@ export default {
 <style scoped lang="scss">
 .banner {
   background-size: cover;
-  background-position: center center;
+  background-position: initial center;
   position: relative;
   color: white;
   object-fit: contain;
@@ -59,28 +54,48 @@ export default {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
+  .banner_contents {
+    margin-left: 30px;
+    padding-top: 140px;
+    height: 190px;
+    text-align: left;
+    .banner_title {
+      font-size: 3rem;
+      font-weight: 800;
+      padding-bottom: 0.3rem;
+      text-shadow: 2px 2px 2px black;
+    }
+    .banner__descriptions {
+      width: 45rem;
+      line-height: 1.3;
+      padding-top: 1rem;
+      font-size: 0.9rem;
+      max-width: 360px;
+      height: 80px;
+      text-shadow: 1px 1px 2px black;
+    }
+    .banner__button {
+      cursor: pointer;
+      color: #fff;
+      outline: none;
+      border: none;
+      font-weight: 700;
+      border-radius: 0.2vw;
+      padding-left: 2rem;
+      padding-right: 2rem;
+      margin-right: 1rem;
+      padding-top: 0.5rem;
+      background-color: rgb(51, 51, 51, 0.5);
+      padding-bottom: 0.5rem;
+    }
+    .banner__button:hover {
+      color: #000;
+      background-color: #e6e6e6;
+      transition: all 0.2s;
+    }
+  }
 }
-.banner_contents {
-  margin-left: 30px;
-  padding-top: 140px;
-  height: 190px;
-  text-align: left;
-}
-.banner_title {
-  font-size: 3rem;
-  font-weight: 800;
-  padding-bottom: 0.3rem;
-  text-shadow: 2px 2px 2px black;
-}
-.banner__descriptions {
-  width: 45rem;
-  line-height: 1.3;
-  padding-top: 1rem;
-  font-size: 0.9rem;
-  max-width: 360px;
-  height: 80px;
-  text-shadow: 1px 1px 2px black;
-}
+
 .banner--fadeBottom {
   width: 100vw;
   height: 7.4rem;
@@ -94,24 +109,5 @@ export default {
   /*My*/
   top: 20%;
   position: relative;
-}
-.banner__button {
-  cursor: pointer;
-  color: #fff;
-  outline: none;
-  border: none;
-  font-weight: 700;
-  border-radius: 0.2vw;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  margin-right: 1rem;
-  padding-top: 0.5rem;
-  background-color: rgb(51, 51, 51, 0.5);
-  padding-bottom: 0.5rem;
-}
-.banner__button:hover {
-  color: #000;
-  background-color: #e6e6e6;
-  transition: all 0.2s;
 }
 </style>

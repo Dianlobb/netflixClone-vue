@@ -49,14 +49,14 @@
     :FetchUrl="API_request.fetchDocumentaries"
     :isLargeRow="false"
   />
-  <netflix-Intro v-if="!show" @video-finish=" show = true"/>
+  <netflix-Intro v-if="!show" @video-finish="show = true" />
 </template>
 
 <script>
 import Nav from "@/components/Nav";
 // import Banner from "./Banner";
 import { useStore } from "vuex";
-import { defineAsyncComponent, onMounted,ref } from "vue";
+import { defineAsyncComponent, onMounted, ref } from "vue";
 import { API_request } from "@/services/request";
 import { nextTick } from "process";
 import netflixIntro from "@/components/netflixIntro.vue";
@@ -82,28 +82,23 @@ export default {
   },
   setup() {
     const store = useStore();
+    const show = ref(null);
     store.dispatch("fetchData");
-    onMounted(() => {
-      nextTick(() => {
-        window.setInterval(() => {
-          store.dispatch("fetchData");
-        }, 30000);
-  
-      });
-    });
+
     const correctName = (key) => {
       return key
         .replace("fetch", "")
         .split(/(?=[A-Z])/)
         .join(" ");
     };
-     const show = ref(null);
-    // window.onload = function () {
-    //   setTimeout(() => {
-    //     show.value = true;
-    //   }, 6000);
-    // };
 
+    onMounted(() => {
+      nextTick(() => {
+        window.setInterval(() => {
+          store.dispatch("fetchData");
+        }, 20000);
+      });
+    });
     return {
       API_request,
       correctName,

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="singupScreen  ">
+    <div class="singupScreen">
       <form>
         <h1>Sing In</h1>
         <input type="email" v-model="loginData.userName" placeholder="Email" />
@@ -22,15 +22,7 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
-
-import { reactive } from "@vue/reactivity";
-import { useRouter } from "vue-router";
-import { auth } from "@/services/firebase";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import composableLogin from "../composables/composableLogin";
 
 // @ is an alias to /src
 
@@ -38,47 +30,7 @@ export default {
   name: "Login",
   components: {},
   setup() {
-    const store = useStore();
-    const router = useRouter();
-
-    const loginData = reactive({
-      userName: "",
-      password: "",
-    });
-    const register = () => {
-      createUserWithEmailAndPassword(
-        auth,
-        loginData.userName,
-        loginData.password
-      )
-        .then(({ user }) => {
-          let data = {
-            islogin: true,
-            uid: user.uid,
-            email: user.email,
-          };
-          store.dispatch("Login", data);
-          router.push({ name: "Home" });
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    };
-    const singIn = () => {
-      signInWithEmailAndPassword(auth, loginData.userName, loginData.password)
-        .then(({ user }) => {
-          let data = {
-            islogin: true,
-            uid: user.uid,
-            email: user.email,
-          };
-          store.dispatch("Login", data);
-          router.push({ name: "Home" });
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    };
+    const { loginData, register, singIn } = composableLogin();
     return {
       loginData,
       register,
@@ -89,7 +41,6 @@ export default {
 </script>
 <style lang="scss">
 .singupScreen {
-  
   max-width: 300px;
   padding: 70px;
   margin-left: auto;

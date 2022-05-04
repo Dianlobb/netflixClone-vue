@@ -19,7 +19,7 @@ export default {
     const videoPlay = ref(null);
     const autoPlay = () => {
       let isplaing = videoPlay.value.play();
-      if (isplaing !== undefined) {
+      if (!isplaing !== undefined) {
         isplaing.then().catch(() => {
           videoPlay.value.controls = true;
         });

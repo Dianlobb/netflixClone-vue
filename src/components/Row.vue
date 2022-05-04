@@ -1,5 +1,5 @@
 <template>
-  <div class="row" @mouseleave="IdPlay = null">
+  <div class="row" @mouseleave="showVideo = false">
     <h2 class="title">{{ title }}</h2>
     <div class="row_posters">
       <div
@@ -15,17 +15,19 @@
         />
       </div>
     </div>
-    <YoutubeVue3
-      class="youtube_iframe"
-      v-if="IdPlay"
-      ref="youtube"
-      :videoid="IdPlay"
-      loop="1"
-      :width="700"
-      :height="420"
-      @ended="onEndedorPause"
-      @paused="onEndedorPause"
-    />
+    <div class="youtubeVideo" v-if="showVideo">
+      <YoutubeVue3
+        @mouseleave="youtube.player.stopVideo()"
+        class="youtube_iframe"
+        ref="youtube"
+        :videoid="IdPlay"
+        :loop="1"
+        :width="700"
+        :height="420"
+        @ended="onEndedorPause"
+        @paused="onEndedorPause"
+      />
+    </div>
   </div>
 </template>
 
@@ -52,9 +54,11 @@ export default {
   },
   setup(props) {
     const store = useStore();
-
-    (async () => {
-      await store.dispatch("fetchRows", [
+    const IdPlay = ref("");
+    const youtube = ref(null);
+    const showVideo = ref(false);
+    (() => {
+      store.dispatch("fetchRows", [
         props.title.split(" ").join(""),
         props.FetchUrl,
       ]);
@@ -66,23 +70,17 @@ export default {
             (props.isLargeRow && movie.poster_path) ||
             (!props.isLargeRow && movie.backdrop_path)
         );
-      } else {
-        return movies;
       }
-    };
-    const IdPlay = ref(null);
-    const youtube = ref(null);
-    const playCurrentVideo = () => {
-      youtube.value.player.playVideo();
+      return movies;
     };
 
-    const onEndedorPause = () => {
-      IdPlay.value = null;
-      youtube.value = null;
-    };
-    const getVideo = async (movieID) => {
+    const playCurrentVideo = () => youtube.value?.player.playVideo();
+
+    const onEndedorPause = () => nextTick(() => (showVideo.value = false));
+    const getVideo = async (dataMovie) => {
+      const [movieID, mediaType] = dataMovie;
       try {
-        await youtube.value.player.stopVideo();
+        await youtube.value?.player.stopVideo();
       } catch (error) {
         youtube.value = null;
       }
@@ -90,15 +88,14 @@ export default {
       nextTick(async () => {
         let result = await store.dispatch(
           "getVideo",
-          props.title.includes("Netflix")
-            ? fetchTrailer(movieID, "tv")
-            : fetchTrailer(movieID)
+          fetchTrailer(
+            movieID,
+            mediaType || (props.title.includes("Netflix") ? "tv" : "movie")
+          )
         );
-        IdPlay.value = null;
-        IdPlay.value = result.length > 0 ? result[0].key : null;
+        IdPlay.value = result.length ? result[0].key : null;
+        showVideo.value = true;
       });
-
-      console.log(movieID);
     };
     return {
       movies: computed(
@@ -110,12 +107,12 @@ export default {
       IdPlay,
       getVideo,
       onEndedorPause,
+      showVideo,
     };
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .row {
   color: #fff;
@@ -147,6 +144,9 @@ export default {
         opacity: 1;
       }
     }
+  }
+  .youtubeVideo {
+    width: 100%;
   }
 }
 </style>

@@ -23,14 +23,14 @@ const routes = [
     path: "/Profile",
     name: "Profile",
     component: () =>
-      import(/* webpackChunkName: "Login" */ "../views/ProfileScreen.vue"),
+      import(/* webpackChunkName: "Profile" */ "../views/ProfileScreen.vue"),
     meta: { requiresAuth: true },
   },
   {
     path: "/Manage",
     name: "Manage",
     component: () =>
-      import(/* webpackChunkName: "Login" */ "../views/ManageProfile.vue"),
+      import(/* webpackChunkName: "Manage" */ "../views/ManageProfile.vue"),
     meta: { requiresAuth: true },
   },
 ];

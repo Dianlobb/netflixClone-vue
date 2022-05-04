@@ -53,18 +53,14 @@ export default {
   components: {},
   setup(_, { emit }) {
     const router = useRouter();
-    const changeProfile = (profileImg) => {
-      emit("change-profile", profileImg);
-    };
     return {
       router,
-      changeProfile,
+      changeProfile: (profileImg) => emit("change-profile", profileImg),
     };
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .optionBox {
   margin: 40px 30px 0 0;
