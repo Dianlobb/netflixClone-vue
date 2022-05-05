@@ -2,7 +2,7 @@
   <div class="row" @mouseleave="showVideo = false">
     <h2 class="title">{{ title }}</h2>
     <div class="row_posters">
-      <div
+      <figure
         class="poster_container"
         :class="isLargeRow && 'row_posterLarge'"
         v-for="movie in filterMovies(movies)"
@@ -13,7 +13,7 @@
           :isLargeRow="isLargeRow"
           @see-trailer="getVideo"
         />
-      </div>
+      </figure>
     </div>
     <div class="youtubeVideo" v-if="showVideo">
       <YoutubeVue3
@@ -136,6 +136,7 @@ export default {
       margin-right: 10px;
       min-width: 250px;
       position: relative;
+      margin: 0 8px;
     }
     .row_posterLarge {
       max-height: 350px;

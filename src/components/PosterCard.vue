@@ -53,6 +53,7 @@ export default {
   &:hover {
     transform: scale(1.09);
     opacity: 1;
+  
   }
 }
 h5 {
