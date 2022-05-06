@@ -46,15 +46,17 @@ export default {
   z-index: -1;
   .normal {
     aspect-ratio: 16/9;
+    &:hover {
+      transform: scale(1.06);
+      opacity: 1;
+    }
   }
   .large {
     aspect-ratio: 1;
-  }
-  &:hover {
-    transform: scale(1.03);
-    opacity: 1;
-
-  
+    &:hover {
+      transform: scale(1.03);
+      opacity: 1;
+    }
   }
 }
 h5 {
