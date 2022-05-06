@@ -1,6 +1,7 @@
 # netflix-project
 This project is a clone of Netflix, is connected with firebase for login and register, and shows trailers from youtube as an iframe, check the [demo here](https://netflix-clone-3a020.web.app).
 
+## Preview 
 
 ![preview image](https://github.com/Dianlobb/netflixClone-vue/blob/main/previewApp.png)
 

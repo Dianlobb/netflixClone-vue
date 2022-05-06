@@ -51,8 +51,9 @@ export default {
     aspect-ratio: 1;
   }
   &:hover {
-    transform: scale(1.09);
+    transform: scale(1.03);
     opacity: 1;
+
   
   }
 }
